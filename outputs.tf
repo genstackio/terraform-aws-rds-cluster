@@ -16,6 +16,9 @@ output "db_port" {
 output "db_url" {
   value = local.db_url
 }
+output "db_url_ro" {
+  value = local.db_url_ro
+}
 output "db_name" {
   value = local.db_name
 }
