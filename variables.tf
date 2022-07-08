@@ -27,6 +27,10 @@ variable "db_preferred_backup_window" {
   type    = string
   default = "07:00-09:00"
 }
+variable "db_preferred_maintenance_window" {
+  type    = string
+  default = null // ex: "Mon:06:00-Mon08:00"
+}
 variable "db_master_username" {
   type = string
 }
@@ -69,4 +73,12 @@ variable "db_min_capacity" {
 variable "db_security_group_id" {
   type    = string
   default = null
+}
+variable "db_instance_class" {
+  type    = string
+  default = null
+}
+variable "db_apply_immediately" {
+  type    = bool
+  default = true
 }
