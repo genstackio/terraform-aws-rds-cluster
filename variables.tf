@@ -13,7 +13,7 @@ variable "db_engine" {
 }
 variable "db_engine_version" {
   type    = string
-  default = "5.7.mysql_aurora.2.03.2"
+  default = null
 }
 variable "db_engine_mode" {
   type    = string
