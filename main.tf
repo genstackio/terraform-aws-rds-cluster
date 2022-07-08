@@ -13,12 +13,12 @@ resource "aws_rds_cluster" "db" {
   skip_final_snapshot       = false
   vpc_security_group_ids    = [local.security_group_id]
   db_subnet_group_name      = aws_db_subnet_group.default.name
-  enable_http_endpoint      = true
+  enable_http_endpoint      = local.is_serverless_v2 ? false : true
 
   apply_immediately         = true # dangerous !
 
   dynamic "scaling_configuration" {
-    for_each = var.db_serverless_version == "v1" ? {v = true} : {}
+    for_each = local.is_serverless_v2 ? {} : {v = true}
     content {
       auto_pause               = var.db_auto_pause
       max_capacity             = var.db_max_capacity
@@ -27,7 +27,7 @@ resource "aws_rds_cluster" "db" {
     }
   }
   dynamic "serverlessv2_scaling_configuration" {
-    for_each = var.db_serverless_version == "v2" ? {v = true} : {}
+    for_each = local.is_serverless_v2 ? {v = true} : {}
     content {
       max_capacity             = var.db_max_capacity
       min_capacity             = var.db_min_capacity
@@ -58,8 +58,8 @@ resource "aws_security_group" "default" {
 resource "aws_security_group_rule" "aurora-incoming" {
   type              = "ingress"
   protocol          = "tcp"
-  from_port         = 3306
-  to_port           = 3306
+  from_port         = local.db_default_port
+  to_port           = local.db_default_port
   cidr_blocks       = [for k,v in var.db_subnets: v.cidr_block]
   security_group_id = local.security_group_id
 }
