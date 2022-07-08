@@ -19,6 +19,10 @@ variable "db_engine_mode" {
   type    = string
   default = "serverless"
 }
+variable "db_serverless_version" {
+  type = string
+  default = "v1"
+}
 variable "db_preferred_backup_window" {
   type    = string
   default = "07:00-09:00"

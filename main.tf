@@ -17,11 +17,21 @@ resource "aws_rds_cluster" "db" {
 
   apply_immediately         = true # dangerous !
 
-  scaling_configuration {
-    auto_pause               = var.db_auto_pause
-    max_capacity             = var.db_max_capacity
-    min_capacity             = var.db_min_capacity
-    seconds_until_auto_pause = var.db_auto_pause_delay
+  dynamic "scaling_configuration" {
+    for_each = var.db_serverless_version == "v1" ? {v = true} : {}
+    content {
+      auto_pause               = var.db_auto_pause
+      max_capacity             = var.db_max_capacity
+      min_capacity             = var.db_min_capacity
+      seconds_until_auto_pause = var.db_auto_pause_delay
+    }
+  }
+  dynamic "serverlessv2_scaling_configuration" {
+    for_each = var.db_serverless_version == "v2" ? {v = true} : {}
+    content {
+      max_capacity             = var.db_max_capacity
+      min_capacity             = var.db_min_capacity
+    }
   }
   lifecycle {
     ignore_changes = [engine_version]
