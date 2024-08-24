@@ -85,5 +85,5 @@ resource "aws_rds_cluster_instance" "instance" {
   db_subnet_group_name         = aws_rds_cluster.db.db_subnet_group_name
   preferred_backup_window      = var.db_preferred_backup_window
   preferred_maintenance_window = var.db_preferred_maintenance_window
-  ca_cert_identifier           = var.ca_cert_identifier
+  ca_cert_identifier           = var.db_ca_cert_identifier
 }
